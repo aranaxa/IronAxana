@@ -6,3 +6,4 @@
 2. My holiday preferences
 3. String operations lab
 4. Error handling lab
+5. Pandas lab
