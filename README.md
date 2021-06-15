@@ -7,4 +7,4 @@
 3. String operations lab
 4. Error handling lab
 5. Pandas labs (1-5)
-6. SQL lab
+6. SQL labs (1-3)
