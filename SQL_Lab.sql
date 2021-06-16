@@ -110,7 +110,7 @@ FROM film;
 
 # 4. What's the average movie duration expressed in format (hours, minutes)?
 SELECT 
- CONCAT(FLOOR(AVG(length) / 60), ' hour(s), ', FLOOR(AVG(length) % 60), ' minute(s)') 
+	CONCAT(FLOOR(AVG(length) / 60), ' hour(s), ', FLOOR(AVG(length) % 60), ' minute(s)') AS avg_length
 FROM film;
 
 # 5. How many distinct (different) actors' last names are there?
@@ -304,22 +304,115 @@ CREATE TABLE deleted_users (
 ) ENGINE=InnoDB AUTO_INCREMENT=600 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 # Imported inactive users via CSV file
-SELECT customer_id
+SELECT *
 FROM deleted_users;
 
 DELETE FROM customer
 WHERE active = 0;
 
-# Getting the following error:
-# Error Code: 1451. Cannot delete or update a parent row: a foreign key constraint fails (`sakila`.`payment`, CONSTRAINT `fk_payment_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE RESTRICT ON UPDATE CASCADE)
-# Error Code: 1451. Cannot delete or update a parent row: a foreign key constraint fails (`sakila`.`rental`, CONSTRAINT `fk_rental_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE RESTRICT ON UPDATE CASCADE)
+#########################
+####### SQL Lab 4 #######
+#########################
 
-DELETE FROM payment
-WHERE customer_id IN (16, 64, 124, 169, 241, 271, 315, 368, 406, 446, 482, 510, 534, 558, 592);
+USE sakila;
 
-DELETE FROM rental
-WHERE customer_id IN (16, 64, 124, 169, 241, 271, 315, 368, 406, 446, 482, 510, 534, 558, 592);
+# 1. In the actor table, which are the actors whose last names are not repeated? 
+# For example if you would sort the data in the table actor by last_name, you would see that there is Christian Arkoyd, Kirsten Arkoyd, and Debbie Arkoyd. These three actors have the same last name. 
+# So we do not want to include this last name in our output. Last name "Astaire" is present only one time with actor "Angelina Astaire", hence we would want this in our output list.
+SELECT DISTINCT last_name
+FROM actor;
 
-# After deleting the records in payment and rental, I can now delete the inactive customers.
-DELETE FROM customer
-WHERE active = 0;
+# 2. Which last names appear more than once? 
+# We would use the same logic as in the previous question but this time we want to include the last names of the actors where the last name was present more than once.
+SELECT 
+	last_name, 
+    COUNT(last_name) AS count_name
+FROM actor
+GROUP BY last_name
+HAVING count_name > 1;
+
+# 3. Using the rental table, find out how many rentals were processed by each employee.
+SELECT s.staff_id, COUNT(r.rental_id) AS count_rental
+FROM rental r
+JOIN staff s
+USING(staff_id)
+GROUP BY s.staff_id;
+
+# 4. Using the film table, find out how many films were released each year
+SELECT release_year, COUNT(title) AS count_year
+FROM film
+GROUP BY release_year;
+
+# 5. Using the film table, find out for each rating how many films were there.
+SELECT 
+	rating, 
+    COUNT(title) AS count_rating
+FROM film
+GROUP BY rating;
+
+# 6. What is the average length of films for each rating? Round off the average lengths to two decimal places.
+SELECT 
+	rating,
+    ROUND(AVG(length), 2) AS avg_length
+FROM film
+GROUP BY rating;
+
+# 7. Which kind of movies (based on rating) have an average duration of two hours or more?
+SELECT 
+	rating, 
+    ROUND(AVG(length), 2) AS avg_length
+FROM film
+GROUP BY rating
+HAVING avg_length >= 120; 
+
+#########################
+####### SQL Lab 5 #######
+#########################
+
+# 1. Inspect the database structure and find the best-fitting table to analyse for the next task.
+
+# 2. Using the tables address and staff and the JOIN command, display the first names, last names, and address of each staff member.
+SELECT 
+	s.first_name, 
+    s.last_name, 
+    a.address, 
+    c.city, 
+    a.district	
+FROM address a
+JOIN staff s
+USING(address_id)
+JOIN city c
+USING(city_id);
+
+# 3. Using the tables staff and payment and the JOIN command, display the total payment amount by staff member in August of 2005.
+SELECT 
+	p.staff_id, 
+    s.first_name, 
+    s.last_name,
+    DATE_FORMAT(p.payment_date, '%M %Y') AS month_year,
+    SUM(p.amount) AS total_amount
+FROM staff s
+JOIN payment p
+USING(staff_id)
+GROUP BY 1, 2, 3, 4
+HAVING month_year = 'August 2005';
+
+# 4. Using the tables film and film_actor and the JOIN command, list each film and the number of actors who are listed for that film.
+SELECT 
+	f.title,
+    COUNT(a.actor_id) AS count_actor
+FROM film f
+JOIN film_actor a
+USING(film_id)
+GROUP BY f.title;
+
+# 5. Using the tables payment and customer and the JOIN command, list the total paid by each customer. Order the customers by last name and alphabetically.
+SELECT 
+	c.last_name, 
+    c.first_name, 
+    SUM(amount) as total_paid
+FROM payment p
+JOIN customer c
+USING(customer_id)
+GROUP BY 1, 2
+ORDER BY 1;
