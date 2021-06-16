@@ -365,9 +365,9 @@ FROM film
 GROUP BY rating
 HAVING avg_length >= 120; 
 
-#########################
-####### SQL Lab 5 #######
-#########################
+####################################
+####### SQL Lab 5 (Optional) #######
+####################################
 
 # 1. Inspect the database structure and find the best-fitting table to analyse for the next task.
 
