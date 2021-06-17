@@ -1,8 +1,8 @@
 USE sakila;
 
-#########################
-####### SQL Lab 1 #######
-#########################
+##################################
+####### SQL Lab 1 (Monday) #######
+##################################
 
 # 1. Review the tables in the database.
 # Done
@@ -86,9 +86,9 @@ FROM sakila.staff;
 SELECT first_name
 FROM sakila.staff;
 
-#########################
-####### SQL Lab 2 #######
-#########################
+#####################################
+####### SQL Lab 2.1 (Tuesday) #######
+#####################################
 
 # 1. Select all the actors with the first name ‘Scarlett’.
 SELECT *
@@ -170,9 +170,9 @@ GROUP BY rental_month
 ORDER BY DATE(rental_month)
 ;
 
-#########################
-####### SQL Lab 3 #######
-#########################
+#####################################
+####### SQL Lab 2.2 (Tuesday) #######
+#####################################
 
 # 1. Get release years.
 SELECT DISTINCT release_year
@@ -310,9 +310,9 @@ FROM deleted_users;
 DELETE FROM customer
 WHERE active = 0;
 
-#########################
-####### SQL Lab 4 #######
-#########################
+#####################################
+####### SQL Lab 3 (Wednesday) #######
+#####################################
 
 USE sakila;
 
@@ -332,14 +332,18 @@ GROUP BY last_name
 HAVING count_name > 1;
 
 # 3. Using the rental table, find out how many rentals were processed by each employee.
-SELECT s.staff_id, COUNT(r.rental_id) AS count_rental
+SELECT 
+	s.staff_id, 
+    COUNT(r.rental_id) AS count_rental
 FROM rental r
 JOIN staff s
 USING(staff_id)
 GROUP BY s.staff_id;
 
 # 4. Using the film table, find out how many films were released each year
-SELECT release_year, COUNT(title) AS count_year
+SELECT 
+	release_year, 
+    COUNT(title) AS count_year
 FROM film
 GROUP BY release_year;
 
@@ -365,9 +369,9 @@ FROM film
 GROUP BY rating
 HAVING avg_length >= 120; 
 
-####################################
-####### SQL Lab 5 (Optional) #######
-####################################
+################################################
+####### SQL Lab 4 (Wednesday) - Optional #######
+################################################
 
 # 1. Inspect the database structure and find the best-fitting table to analyse for the next task.
 
@@ -416,3 +420,80 @@ JOIN customer c
 USING(customer_id)
 GROUP BY 1, 2
 ORDER BY 1;
+
+####################################
+####### SQL Lab 5 (Thursday) #######
+####################################
+
+# Inspect the database structure and find the best-fitting table to analyse for the next task.
+
+# 1. Use the RANK() and the table of your choice rank films by length (filter out the rows that have nulls or 0s in length column). 
+# In your output, only select the columns title, length, and the rank.
+SELECT
+	title,
+    length,
+    RANK() OVER (ORDER BY length) AS ranking_length  
+FROM film
+WHERE length <> 0
+OR length IS NOT NULL;
+
+# 2. Build on top of the previous query and rank films by length within the rating category 
+# (filter out the rows that have nulls or 0s in length column). 
+# In your output, only select the columns title, length, rating and the rank.
+SELECT
+    title,
+    length,
+    rating,
+    RANK() OVER (PARTITION BY rating ORDER BY length) AS ranking_length  
+FROM film
+WHERE f.length <> 0
+OR f.length IS NOT NULL;
+
+# 3. How many films are there for each of the categories? Inspect the database structure and use appropriate join to write this query.
+SELECT 
+	c.name AS category,
+    COUNT(*) as count_category
+FROM film f
+JOIN film_category fc
+USING(film_id)
+JOIN category c
+USING(category_id)
+GROUP BY 1
+ORDER BY 2 DESC;
+
+# 4. Which actor has appeared in the most films?
+SELECT 
+	CONCAT(a.first_name, ' ', a.last_name) AS actor,
+    COUNT(f.title) as count_film
+FROM film f
+JOIN film_actor fa
+USING(film_id)
+JOIN actor a
+USING(actor_id)
+GROUP BY actor
+ORDER BY 2 DESC;
+
+# 5. Most active customer (the customer that has rented the most number of films)
+SELECT
+    c.first_name,
+    c.last_name,
+    COUNT(r.rental_id) AS count_customer
+FROM customer c
+JOIN rental r
+USING(customer_id)
+GROUP BY c.customer_id
+ORDER BY 3 DESC;
+
+# Bonus: Which is the most rented film? 
+# The answer is Bucket Brotherhood This query might require using more than one join statement. Give it a try. 
+# We will talk about queries with multiple join statements later in the lessons.
+SELECT
+	f.title,
+    COUNT(r.rental_id) AS count_film
+FROM film f
+JOIN inventory i
+USING(film_id)
+JOIN rental r
+USING(inventory_id)
+GROUP BY f.title
+ORDER BY 2 DESC;
