@@ -1,8 +1,8 @@
-# Connecting SQL with Python
+# Connecting SQL with Python & Logistic Regression
 
-## Table of Content
+## Table of Contents
 
-### Day 1:  [SQL_to_Python_Connection.ipynb](https://github.com/aranaxa/IronAxana/blob/main/Week_4/Beautiful_Repo_and_Readme/SQL_to_Python_Connection.ipynb)
+### [Day 1](https://github.com/aranaxa/IronAxana/blob/main/Week_4/Beautiful_Repo_and_Readme/SQL_to_Python_Connection.ipynb)
 
 1. Connecting to MySQL from Python
 2. Initial query on loans to check everything works
@@ -10,7 +10,7 @@
 4. Visualization
 5. Can we do a churn analysis without a complex SQL query?
 
-### Day 2: [Logistic_Regression_Bank.ipynb](https://github.com/aranaxa/IronAxana/blob/main/Week_4/Beautiful_Repo_and_Readme/Logistic_Regression_Bank.ipynb)
+### [Day 2](https://github.com/aranaxa/IronAxana/blob/main/Week_4/Beautiful_Repo_and_Readme/Logistic_Regression_Bank.ipynb)
 
 1. Binary Classification with Logistic Regression
 	* Import libraries
@@ -29,13 +29,13 @@
 	* Data is highly imbalanced (not complete yet)
 
 
-### Business Challenge:
+## Business Challenge
 
 Using logistic regression, can we predict whether a loan ends up as 
 * Status A (contract finished, no problems) OR
 * Status B (contract finished, loan not payed)?
 
-### Process:
+## Process
 * **SQL:** Set up SQL query
 * **EDA:** Assessed dataframe to prepare for cleaning
 * **Data cleaning & wrangling in Python:** Dropped columns 'loan_id' and 'type'
@@ -47,15 +47,21 @@ Using logistic regression, can we predict whether a loan ends up as
 	- ROC curve
 	- Confusion matrix
 
-### Outcome:
+## Outcome
 * AUC is 0.78, meaning there is a 78% chance that the model will be able to distinguish between status A and status B
 * Confusion matrix:
-	- # 63 are not status B - true positive
+	- 63 are not status B - true positive
 	- 0 are not status B - false positive
 	- 8 are status B - false negative
 	- 0 are status B - true negative
 
-### Conclusion:
+### ROC curve
+![ROC curve](https://github.com/aranaxa/IronAxana/blob/main/Week_4/Beautiful_Repo_and_Readme/Images/image_1.png)
+
+### Confusion matrix
+![Confusion matrix](https://github.com/aranaxa/IronAxana/blob/main/Week_4/Beautiful_Repo_and_Readme/Images/image_2.png)
+
+## Conclusion
 The model fails to predict status B because the dataset is too small. Further steps will need to be taken to improve the results.
 
 
