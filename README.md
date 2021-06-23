@@ -15,3 +15,4 @@
 ### Week 4
 7. Python/SQL lab
 8. Beautiful repo and readme
+9. Subsetting and descriptive statistics lab
