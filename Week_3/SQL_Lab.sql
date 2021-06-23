@@ -499,7 +499,7 @@ GROUP BY f.title
 ORDER BY 2 DESC;
 
 #############################################
-####### SQL Lab 5 (Friday) - Optional #######
+####### SQL Lab 6 (Friday) - Optional #######
 #############################################
 
 # 1. How many copies of the film Hunchback Impossible exist in the inventory system?
