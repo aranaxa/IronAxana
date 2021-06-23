@@ -10,7 +10,8 @@
 5. Pandas labs (1-5)
 
 ### Week 3
-6. SQL labs (1-5)
+6. SQL labs (1-6)
 
 ### Week 4
 7. Python/SQL lab
+8. Beautiful repo and readme
