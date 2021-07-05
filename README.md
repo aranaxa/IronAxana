@@ -1,4 +1,4 @@
-# IronAxana
+# Ironhack Labs
 
 ## Contents:
 
@@ -16,3 +16,6 @@
 7. Python/SQL lab
 8. Beautiful repo and readme
 9. Subsetting and descriptive statistics lab
+
+### Week 6
+10. Real estate prediction lab
