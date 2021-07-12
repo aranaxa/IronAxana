@@ -7,10 +7,10 @@
 2. My holiday preferences
 3. String operations lab
 4. Error handling lab
-5. Pandas labs (1-5)
+5. Pandas labs 1-5
 
 ### Week 3
-6. SQL labs (1-6)
+6. SQL labs 1-6
 
 ### Week 4
 7. Python/SQL lab
@@ -19,3 +19,6 @@
 
 ### Week 6
 10. Real estate prediction lab
+
+### Week 7
+11. Web scraping lab 1
