@@ -19,6 +19,3 @@
 
 ### Week 6
 10. Real estate prediction lab
-
-### Week 7
-11. Web scraping lab 1
