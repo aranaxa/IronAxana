@@ -19,3 +19,6 @@
 
 ### Week 6
 10. Real estate prediction lab
+
+### Week 8
+11. NLP lab
