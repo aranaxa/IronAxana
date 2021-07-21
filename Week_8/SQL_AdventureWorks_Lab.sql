@@ -73,7 +73,7 @@ ORDER BY 2 DESC;
 SELECT 
 	MONTH(TransactionDate) AS Month,
     YEAR(TransactionDate) AS Year,
-	COUNT(DISTINCT TransactionID) AS NoTransactions
+	COUNT(DISTINCT TransactionID) AS NumTransactions
 FROM transactionhistory
 GROUP BY 1, 2
 ORDER BY 2, 1;
@@ -96,16 +96,23 @@ AND s.SalesQuota < s.SalesLastYear;
 
 # 8. Do all products in the inventory have photos in the database and a text product description?
 SELECT 
-	COUNT(DISTINCT ProductID) AS NoProducts
+	COUNT(DISTINCT ProductID) AS NumProducts
 FROM product;
 
 SELECT 
-	COUNT(DISTINCT ProductPhotoID) AS NoProductPhotos
+	COUNT(DISTINCT ProductPhotoID) AS NumProductPhotos
 FROM productphoto;
 
-SELECT 
-	COUNT(DISTINCT ProductDescriptionID) AS NoProductDescriptions
-FROM productdescription;
+SELECT
+    SUM(CASE WHEN pd.ProductDescriptionID IS NULL THEN 1 END) AS NumMissingProductDescriptions
+FROM product p
+LEFT JOIN productmodel pm
+USING(ProductModelID)
+LEFT JOIN productmodelproductdescriptionculture pmp
+USING(ProductModelID)
+LEFT JOIN productdescription pd
+USING(ProductDescriptionID)
+;
 
 # 9. What's the average unit price of each product name on purchase orders which were not fully, but at least partially rejected?
 SELECT 
@@ -123,7 +130,7 @@ GROUP BY 1, 2;
 
 # 10. How many engineers are on the employee list? Have they taken any sickleave?
 SELECT 
-	COUNT(EmployeeID) AS NoEngineers
+	COUNT(EmployeeID) AS NumEngineers
 FROM employee
 WHERE Title LIKE "%Engineer%";
 
