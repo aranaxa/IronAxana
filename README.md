@@ -23,3 +23,4 @@
 ### Week 8
 11. NLP lab
 12. Computer vision lab
+13. AdventureWorks SQL lab
